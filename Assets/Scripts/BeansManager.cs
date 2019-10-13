@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ *BeansManager
+ * is a class to manage all the Beans in the gamePlay
+ *   
+ */
 public class BeansManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     [SerializeField]
     private Transform smallBeans;
     [SerializeField]
     private Transform bigBeans;
 
-
+    //Active all the beans in the scene.
+    //Remeber to active all the beans after all the Nodes are ready.
     void Start()
     {
         for (int i = 0; i < smallBeans.childCount; i++)
@@ -23,7 +29,7 @@ public class BeansManager : MonoBehaviour
         }
     }
 
-
+    //Check all the beans is disable. And return the result.
     public bool CheckBeans()
     {
         for (int i = 0; i < bigBeans.childCount; i++)

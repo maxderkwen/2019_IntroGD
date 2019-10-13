@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/**
+ * This class is manage the Game play is wining or losing
+ * And changing the UI element
+ **/
 public class GamePlayManager : MonoBehaviour
 {
     [SerializeField]
@@ -29,8 +33,7 @@ public class GamePlayManager : MonoBehaviour
     private Text ScoreUI;
     private void Start()
     {
-        Time.timeScale = 1;
-
+        Time.timeScale = 1; //to prevent time scale is 0, when reload the scene
         score=PlayerPrefs.GetInt("WinningScore");
 
     }
@@ -52,7 +55,7 @@ public class GamePlayManager : MonoBehaviour
     {
         ScoreUI.text = ""+score;
     }
-    private void Losing()
+    private void Losing() 
     {
         if (health < 0) {
             PlayerPrefs.SetInt("WinningScore", 0);
@@ -65,7 +68,7 @@ public class GamePlayManager : MonoBehaviour
             Time.timeScale = 0;
         }
     }
-    private void Winning()
+    private void Winning() // when all the beans clear. Winning
     {
         if (beansManager.CheckBeans() == true)
         {

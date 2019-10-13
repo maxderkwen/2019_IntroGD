@@ -1,9 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/**
+ * This class to control the player movement
+ * Using the current Node to find the up,down,left,right node. 
+ * And using moveDir to check the move direction, then choose the Node
+ *  Input.GetKeyDown() to change the move direction.
+ * 
+ * When the player is moving near to the target node, the target node will become current node
+ * Then the target node will change to next same moveDir Node according to Node.cs class
+ * **/
 public class PlayerControl : MonoBehaviour
 {
+    
     [SerializeField]
     private float speed=2.5f;
     [SerializeField]

@@ -2,46 +2,53 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+ * Ghost Move class
+ * This class is handle all the Ghost Movement.
+ * including 4 different type of Ghost AI.
+ * **/
 public class GhostMove : MonoBehaviour
 {
+
     [SerializeField]
     private float speed = 2.0f;
 
     [SerializeField]
     private Transform currentNode;
-
-    [SerializeField]
     private int currentPathNumber;
-
-    [SerializeField]
+    //using a list to record the path find by PathFinding class.
     private List<Transform> path= new List<Transform>();
 
     [SerializeField]
     private Transform targetNode;
 
+    //use it to get the new Path for the movement;
     private PathFingding newFind;
-    [SerializeField]
+
+    
+    [SerializeField] //setting the start movement point of the Ghost
     private Transform startPos;
-    [SerializeField]
+    [SerializeField] //setting the start moving time of the Ghost
     private float startTime;
-    [SerializeField]
+    [SerializeField] //setting the ghost is active to move or not.
     private bool active = false;
 
-    [SerializeField]
+    [SerializeField] //record the moving Around nodes index
     private int moveAroundIndex;
-    [SerializeField]
+    [SerializeField] //setting the moving around nodes target point.
     private Transform[] moveAroundNode;
 
-    [SerializeField]
+    [SerializeField] //record the player's PlayerControl component.
     private PlayerControl player;
 
+    //enum to control 4 AI mode
     private enum AImode {Green,Pink,Blue,Red }
     [SerializeField]
-    private AImode _AIMode;
+    private AImode _AIMode; //setting AI mode
 
     [SerializeField]
-    private NodeManager NodeManager;
-    // Start is called before the first frame update
+    private NodeManager NodeManager; //using it to find the target node in all Nodes.
+
     void Start()
     {
         StartCoroutine(startMove());
@@ -51,10 +58,10 @@ public class GhostMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (active == true)
+        if (active == true) //if is active then Ghost can move
         {
             if (currentNode == null)
-            {
+            {   //Those code is to move the Ghost to start position
                 if (Vector3.Distance(transform.position, startPos.position) < 0.1f)
                 {
                     currentNode = startPos;
@@ -62,17 +69,17 @@ public class GhostMove : MonoBehaviour
                 transform.position = Vector3.MoveTowards(transform.position, startPos.position, speed * Time.deltaTime);
             }
             else
-            {
-                if (path.Count > 0)
+            { 
+                if (path.Count > 0) //If it can find the path;
                 {
-                    checkCurrentPath();
-                    checkPosition();
-                    moving();
-                    AImanage();
+                    checkCurrentPath(); //check current path is finished or not
+                    checkPosition(); //checking it is move to next node or not
+                    moving();  // Ghost position is change
+                    AImanage(); //mange 4 different AI
                 }
                 else
                 {
-                    findPath();
+                    findPath(); 
                 }
 
             }
@@ -109,13 +116,13 @@ public class GhostMove : MonoBehaviour
 
     void moving()
     {
-        if (currentPathNumber < path.Count)
+        if (currentPathNumber < path.Count) //make sure it has path to walk
         {
             transform.position = Vector3.MoveTowards(transform.position, path[currentPathNumber].position, speed * Time.deltaTime);
         }
     }
 
-    void AImanage()
+    void AImanage() // 4 AI mode to mange the Ghost
     {
         switch (_AIMode)
         {
@@ -151,7 +158,7 @@ public class GhostMove : MonoBehaviour
         }
     }
 
-    void moveClockWise()
+    void moveClockWise() //Using Transform[] moveAroundNode to move around
     {
         if (Vector3.Distance(currentNode.position, moveAroundNode[moveAroundIndex].position) < 0.1f)
         {
@@ -166,7 +173,7 @@ public class GhostMove : MonoBehaviour
     }
 
     
-    private void moveAway()
+    private void moveAway() //Find  the farest  node away from the player, set it to targetnode
     {
         float maxDistance=0;
         int index=-1;
@@ -224,12 +231,12 @@ public class GhostMove : MonoBehaviour
 
     }
 
-    void chaseMove()
+    void chaseMove() //follow the player
     {
         targetNode = player.currentNode;
 
-        if (targetNode == currentNode)
-        {
+        if (targetNode == currentNode) //prevent the Ghost stop moving
+        { 
             if (currentNode.GetComponent<Node>().up != null)
             {
                 targetNode = currentNode.GetComponent<Node>().up;
@@ -246,7 +253,6 @@ public class GhostMove : MonoBehaviour
             {
                 targetNode = currentNode.GetComponent<Node>().right;
             }
-            //targetNode = NodeManager.nodes[(int)Random.Range(0, NodeManager.nodes.Count)];
         }
 
     }

@@ -2,8 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/**
+ * This class is to record all the nearby nodes of one node
+ * By using the 4 direction raycast hit.
+ * 
+ * 
+ * **/
 public class Node : MonoBehaviour
 {
+
     private RaycastHit hit;
     [SerializeField]
     public Transform up;
@@ -14,6 +22,8 @@ public class Node : MonoBehaviour
     [SerializeField]
     public Transform right;
 
+
+    //prepare for Pathfinding
     public int gCost;
     public int hCost;
     public int fCost { get { return gCost + hCost; } }

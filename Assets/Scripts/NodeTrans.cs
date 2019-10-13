@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/**
+ * Transfer player between to node and keep it with same move direction.
+ * **/
 public class NodeTrans : MonoBehaviour
 {
     private Node thisNode;
     [SerializeField]
     private Transform target;
     private Node targetNode;
-    // Start is called before the first frame update
     void Start()
     {
         thisNode = GetComponent<Node>();

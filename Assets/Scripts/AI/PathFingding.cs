@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/**
+ * This class is a traditional A-star algorithm Pathfinding class
+ * using the Nodes in the game play scene as the grid to find the road.
+ *
+ * OpenSet to record the nodes which are ready to calculated.
+ * CloseSet to record the nodes finished calculated.
+ * 
+ * 
+ * **/
 public class PathFingding : MonoBehaviour
 {
-
-    //public List<Transform> OpenList= new List<Transform>();
-    //public List<Transform> ClosedList = new List<Transform>();
-
+    //record the final result path, used by other component.
     public List<Transform> FinalPath=new List<Transform>();
-
-
-
-
     public void FindNodePath(Transform _startNode, Transform _endNode)
     {
         Transform startNode = _startNode;
@@ -23,10 +25,10 @@ public class PathFingding : MonoBehaviour
         HashSet<Transform> closedSet = new HashSet<Transform>();
         openSet.Add(startNode);
 
-        while (openSet.Count > 0)
+        while (openSet.Count > 0) //make sure it has the start Point
         {
             Transform node = openSet[0];
-            for (int i = 1; i < openSet.Count; i++)
+            for (int i = 1; i < openSet.Count; i++) //find the lowest cost in openSet
             {
                 if (openSet[i].GetComponent<Node>().fCost < node.GetComponent<Node>().fCost || openSet[i].GetComponent<Node>().fCost == node.GetComponent<Node>().fCost)
                 {
@@ -35,16 +37,16 @@ public class PathFingding : MonoBehaviour
                 }
             }
 
-            openSet.Remove(node);
-            closedSet.Add(node);
+            openSet.Remove(node); //while finish calculated, and choose it as next node, remove from openSet add to closeSet
+            closedSet.Add(node); 
 
-            if (node == targetNode)
+            if (node == targetNode) //if it is  the  final node
             {
-                RetracePath(startNode, targetNode);
+                RetracePath(startNode, targetNode); //Retrace, to make it usable for other game object
                 continue;
             }
 
-            foreach (Transform neighbour in NeighbourNode(node))
+            foreach (Transform neighbour in NeighbourNode(node)) //find all the nearby node cost.
             {
                 if ( closedSet.Contains(neighbour))
                 {
@@ -52,7 +54,7 @@ public class PathFingding : MonoBehaviour
                 }
 
                 int newCostToNeighbour = node.GetComponent<Node>().gCost + calculateManhattenDistance(node, neighbour);
-                if (newCostToNeighbour < neighbour.GetComponent<Node>().gCost || !openSet.Contains(neighbour))
+                if (newCostToNeighbour < neighbour.GetComponent<Node>().gCost || !openSet.Contains(neighbour))  
                 {
                     neighbour.GetComponent<Node>().gCost = newCostToNeighbour;
                     neighbour.GetComponent<Node>().hCost = calculateManhattenDistance(neighbour, targetNode);
@@ -63,10 +65,9 @@ public class PathFingding : MonoBehaviour
                 }
             }
         }
-        //yield return null;
     }
 
-    private List<Transform> tempList = new List<Transform>();
+    private List<Transform> tempList = new List<Transform>(); 
     private Node tempNode;
     List<Transform> NeighbourNode(Transform node)
     {
@@ -89,7 +90,7 @@ public class PathFingding : MonoBehaviour
                 tempList.Add(tempNode.right);
         }
         return tempList;
-    }
+    } //To find the nearby node
 
 
     int calculateManhattenDistance(Transform node1,Transform node2)

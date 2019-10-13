@@ -2,7 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+/**
+ * This class is to give the player special skill for innovation.
+ * And checking skills UI element
+ * Two new skill
+ *  1. God mode to prevent Pac man die.
+ *  2. Portal to transfer the player
+ * **/
 public class PlayerSkill : MonoBehaviour
 {
     [SerializeField]
@@ -40,7 +46,7 @@ public class PlayerSkill : MonoBehaviour
     {
         checkSkillsUI();
     }
-    private IEnumerator callGodMode()
+    private IEnumerator callGodMode() // give nearlly 2 second of God Mode, and make Pac-Man flash
     {
         playerControl.GodMode = true;
         for (int i = 0; i < 10; i++)
@@ -55,7 +61,7 @@ public class PlayerSkill : MonoBehaviour
 
 
     private bool portalSet = false;
-    private void callPortal()
+    private void callPortal() //record portal position first, then second time move back to portal space
     {
         print(portalGate.gameObject.activeInHierarchy);
         if (portalSet == false )
@@ -86,6 +92,8 @@ public class PlayerSkill : MonoBehaviour
         transUI.text = "Portal: x" + skillTrans;
     }
 
+
+    //Adding skills point random by eating Big Beans.
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "BigBeans")
