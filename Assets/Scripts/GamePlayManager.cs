@@ -59,7 +59,7 @@ public class GamePlayManager : MonoBehaviour
             PlayerPrefs.Save();
             health = 0;
             HealthText.text = "x" + health;
-            player.GetComponent<AudioSource>().Stop();
+            player.transform.GetComponent<AudioSource>().Stop();
             MainCamera.GetComponent<AudioSource>().Stop();
             losingUI.SetActive(true);
             Time.timeScale = 0;
@@ -71,7 +71,7 @@ public class GamePlayManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("WinningScore",score);
             PlayerPrefs.Save();
-            player.GetComponent<AudioSource>().Stop();
+            player.transform.GetComponent<AudioSource>().Stop();
             MainCamera.GetComponent<AudioSource>().Stop();
             winingUI.SetActive(true);
             Time.timeScale=0;

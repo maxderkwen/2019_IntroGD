@@ -23,6 +23,7 @@ public class PlayerControl : MonoBehaviour
     private AudioClip[] music;
     [SerializeField]
     private bool godMode=false;
+    public bool GodMode { get { return godMode; } set { godMode = value; } }
     private float distanceNext=-1f;
     private float distanceCurr=-1f;
 
