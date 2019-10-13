@@ -7,12 +7,22 @@ public class PlayerControl : MonoBehaviour
     [SerializeField]
     private float speed=2.5f;
     [SerializeField]
+    private Transform startNode;
+    [SerializeField]
     public Transform currentNode;
     [SerializeField]
-    private Transform nextNode;
+    public Transform nextNode;
     public MoveDir currentDir;
     public enum MoveDir {up,down,left,right}
 
+    [SerializeField]
+    GamePlayManager gamePlayManager;
+
+    private AudioSource musicPlay;
+    [SerializeField]
+    private AudioClip[] music;
+    [SerializeField]
+    private bool godMode=false;
     private float distanceNext=-1f;
     private float distanceCurr=-1f;
 
@@ -21,6 +31,7 @@ public class PlayerControl : MonoBehaviour
     void Start()
     {
         currentDir = MoveDir.up;
+        musicPlay = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -227,6 +238,13 @@ public class PlayerControl : MonoBehaviour
         else
         {
             transform.GetComponent<Animator>().speed = 1;
+            if (!musicPlay.isPlaying)
+            {
+                musicPlay.Stop();
+                musicPlay.loop = false;
+                musicPlay.clip = music[1];
+                musicPlay.Play();
+            }
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -238,12 +256,49 @@ public class PlayerControl : MonoBehaviour
         }
         if (other.transform.tag == "Beans" )
         {
+                gamePlayManager.Score += 100;
+                musicPlay.Stop();
+                musicPlay.loop = false;
+                musicPlay.clip = music[0];
+                musicPlay.Play();
+
             other.gameObject.SetActive(false);
         }
         if (other.transform.tag == "BigBeans")
         {
+                gamePlayManager.Score += 500;
+                musicPlay.Stop();
+                musicPlay.loop = false;
+                musicPlay.clip = music[0];
+                musicPlay.Play();
+
             other.gameObject.SetActive(false);
         }
+        if (other.transform.tag == "Ghosts")
+        {
+            if (godMode == false)
+            {
+                gamePlayManager.Health--;
+                transform.position = startNode.position;
+                currentNode = startNode;
+                nextNode = startNode;
+                currentDir = MoveDir.up;
+                StartCoroutine(Reborn());
+            }
+        }
+    }
+
+    private IEnumerator Reborn()
+    {
+        godMode = true;
+        for (int i = 0; i < 10; i++)
+        {
+            transform.GetComponent<SpriteRenderer>().enabled = false;
+            yield return new WaitForSeconds(0.2f);
+            transform.GetComponent<SpriteRenderer>().enabled = true;
+            yield return new WaitForSeconds(0.2f);
+        }
+        godMode = false;
     }
 
     public void SetCurrentNode(Transform t)

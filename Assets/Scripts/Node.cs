@@ -21,10 +21,10 @@ public class Node : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        StartCoroutine("GetAroundNode");
+        GetAroundNode();
     }
 
-    IEnumerator GetAroundNode()
+    private void GetAroundNode()
     {
         transform.GetComponent<SphereCollider>().enabled = false;
         if (Physics.Raycast(transform.position, Vector3.up*5, out hit))
@@ -56,7 +56,6 @@ public class Node : MonoBehaviour
             }
         }
         transform.GetComponent<SphereCollider>().enabled = true;
-        yield return null;
     }
 
 

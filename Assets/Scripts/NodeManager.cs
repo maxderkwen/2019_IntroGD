@@ -6,8 +6,12 @@ public class NodeManager : MonoBehaviour
 {
     [SerializeField]
     private Transform nodeParent;
-    public static List<Transform> nodes=new List<Transform>();
+    public List<Transform> nodes=new List<Transform>();
     private void Awake()
+    {
+
+    }
+    private void Start()
     {
         for (int i = 0; i < nodeParent.childCount; i++)
         {

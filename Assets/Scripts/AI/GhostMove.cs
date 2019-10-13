@@ -39,6 +39,8 @@ public class GhostMove : MonoBehaviour
     [SerializeField]
     private AImode _AIMode;
 
+    [SerializeField]
+    private NodeManager NodeManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -53,7 +55,7 @@ public class GhostMove : MonoBehaviour
         {
             if (currentNode == null)
             {
-                if (Vector3.Distance(transform.position, startPos.position) < 0.2f)
+                if (Vector3.Distance(transform.position, startPos.position) < 0.1f)
                 {
                     currentNode = startPos;
                 }
@@ -179,7 +181,22 @@ public class GhostMove : MonoBehaviour
         }
         if (NodeManager.nodes[index] == currentNode)
         {
-            targetNode = NodeManager.nodes[(int)Random.Range(0, NodeManager.nodes.Count)];
+            if (currentNode.GetComponent<Node>().up != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().up;
+            }
+            if (currentNode.GetComponent<Node>().down != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().down;
+            }
+            if (currentNode.GetComponent<Node>().left != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().left;
+            }
+            if (currentNode.GetComponent<Node>().right != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().right;
+            }
         }
         else
         {
@@ -187,7 +204,22 @@ public class GhostMove : MonoBehaviour
         }
         if (targetNode == currentNode)
         {
-            targetNode = NodeManager.nodes[(int)Random.Range(0, NodeManager.nodes.Count)];
+            if (currentNode.GetComponent<Node>().up != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().up;
+            }
+            if (currentNode.GetComponent<Node>().down != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().down;
+            }
+            if (currentNode.GetComponent<Node>().left != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().left;
+            }
+            if (currentNode.GetComponent<Node>().right != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().right;
+            }
         }
 
     }
@@ -195,15 +227,41 @@ public class GhostMove : MonoBehaviour
     void chaseMove()
     {
         targetNode = player.currentNode;
+
         if (targetNode == currentNode)
         {
-            targetNode = NodeManager.nodes[(int)Random.Range(0, NodeManager.nodes.Count)];
+            if (currentNode.GetComponent<Node>().up != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().up;
+            }
+            if (currentNode.GetComponent<Node>().down != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().down;
+            }
+            if (currentNode.GetComponent<Node>().left != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().left;
+            }
+            if (currentNode.GetComponent<Node>().right != null)
+            {
+                targetNode = currentNode.GetComponent<Node>().right;
+            }
+            //targetNode = NodeManager.nodes[(int)Random.Range(0, NodeManager.nodes.Count)];
         }
+
     }
 
     IEnumerator startMove()
     {
         yield return new WaitForSeconds(startTime);
         active = true;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "Nodes")
+        {
+            currentNode = other.transform;
+        }
     }
 }

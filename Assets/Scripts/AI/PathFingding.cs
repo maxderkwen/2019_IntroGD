@@ -6,8 +6,8 @@ using System;
 public class PathFingding : MonoBehaviour
 {
 
-    public List<Transform> OpenList= new List<Transform>();
-    public List<Transform> ClosedList = new List<Transform>();
+    //public List<Transform> OpenList= new List<Transform>();
+    //public List<Transform> ClosedList = new List<Transform>();
 
     public List<Transform> FinalPath=new List<Transform>();
 
